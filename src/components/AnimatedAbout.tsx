@@ -49,7 +49,7 @@ const AnimatedAbout: React.FC = () => {
   return (
     <section 
       id="about" 
-      className="py-40 relative overflow-hidden"
+      className="py-32 relative overflow-hidden"
       style={{
         background: 'linear-gradient(135deg, var(--background-cream), var(--background-light))'
       }}

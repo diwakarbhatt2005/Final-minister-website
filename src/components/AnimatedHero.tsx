@@ -41,8 +41,8 @@ const AnimatedHero: React.FC<AnimatedHeroProps> = ({ onScrollToNext }) => {
 
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Proper spacing for fixed header - increased height */}
-      <div className="absolute top-0 left-0 right-0 h-24 z-10"></div>
+      {/* Proper spacing for fixed header */}
+      <div className="absolute top-0 left-0 right-0 h-20 z-10"></div>
       
       {/* Background with Parallax Effect */}
       <motion.div
@@ -105,7 +105,7 @@ const AnimatedHero: React.FC<AnimatedHeroProps> = ({ onScrollToNext }) => {
       })}
 
       {/* Main Content */}
-      <div className="relative z-20 text-center text-white max-w-6xl mx-auto px-4 pt-32">
+      <div className="relative z-20 text-center text-white max-w-6xl mx-auto px-4 pt-20">
         <motion.div
           initial={{ opacity: 0, y: 100 }}
           animate={{ opacity: 1, y: 0 }}
