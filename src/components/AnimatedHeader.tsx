@@ -91,16 +91,16 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({ currentSection, onSecti
         }`}
         style={{
           background: isScrolled 
-            ? 'rgba(253, 248, 243, 0.95)' 
-            : 'rgba(253, 248, 243, 0.9)',
+            ? 'var(--card-white)' 
+            : 'rgba(255, 255, 255, 0.9)',
           borderColor: 'var(--glass-warm)'
         }}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style={{ minHeight: '80px' }}>
-          <div className="flex items-center justify-between h-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style={{ minHeight: '90px' }}>
+          <div className="flex items-center justify-between h-22">
             {/* Logo */}
             <motion.div 
               className="flex items-center space-x-3 cursor-pointer no-translate"
@@ -230,7 +230,7 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({ currentSection, onSecti
             <motion.button
               className="lg:hidden p-3 rounded-xl backdrop-blur-sm transition-colors"
               style={{
-                background: 'var(--card-white)',
+               background: 'var(--background-light)',
                 color: 'var(--text-dark)'
               }}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -282,6 +282,10 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({ currentSection, onSecti
             <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
             <motion.div
               className="absolute top-20 left-4 right-4 bg-white/95 backdrop-blur-xl rounded-2xl border border-gray-200 shadow-lg overflow-hidden"
+             style={{
+               background: 'var(--card-white)',
+               borderColor: 'var(--glass-warm)'
+             }}
               initial={{ y: -20, opacity: 0, scale: 0.95 }}
               animate={{ y: 0, opacity: 1, scale: 1 }}
               exit={{ y: -20, opacity: 0, scale: 0.95 }}
@@ -314,6 +318,7 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({ currentSection, onSecti
                 ))}
                 
                 <div className="border-t border-white/20 pt-4 mt-4">
+                 <div className="border-t pt-4 mt-4" style={{ borderColor: 'var(--glass-warm)' }}>
                   <button
                     onClick={handleLanguageToggle}
                     className="w-full text-left px-6 py-4 rounded-xl font-medium transition-all duration-300 no-translate"
