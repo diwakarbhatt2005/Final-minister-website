@@ -317,8 +317,7 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({ currentSection, onSecti
                   </motion.button>
                 ))}
                 
-                <div className="border-t border-white/20 pt-4 mt-4">
-                 <div className="border-t pt-4 mt-4" style={{ borderColor: 'var(--glass-warm)' }}>
+                <div className="border-t pt-4 mt-4" style={{ borderColor: 'var(--glass-warm)' }}>
                   <button
                     onClick={handleLanguageToggle}
                     className="w-full text-left px-6 py-4 rounded-xl font-medium transition-all duration-300 no-translate"
