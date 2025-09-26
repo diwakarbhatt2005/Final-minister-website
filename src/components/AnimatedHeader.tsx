@@ -99,8 +99,8 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({ currentSection, onSecti
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style={{ minHeight: '90px' }}>
-          <div className="flex items-center justify-between h-22">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style={{ minHeight: '100px' }}>
+          <div className="flex items-center justify-between h-24">
             {/* Logo */}
             <motion.div 
               className="flex items-center space-x-3 cursor-pointer no-translate"
@@ -144,7 +144,7 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({ currentSection, onSecti
                 <motion.button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className={`relative px-4 py-2 rounded-xl font-medium transition-all duration-300 ${
+                  className={`relative px-4 py-3 rounded-xl font-medium transition-all duration-300 ${
                     currentSection === item.id
                       ? 'text-white shadow-lg'
                       : 'hover:bg-opacity-80'
@@ -184,7 +184,7 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({ currentSection, onSecti
               {/* Theme Toggle */}
               <motion.button
                 onClick={toggleTheme}
-                className="theme-toggle"
+                className="theme-toggle mt-1"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 title={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
@@ -217,7 +217,7 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({ currentSection, onSecti
               {/* Language Toggle */}
               <motion.button
                 onClick={handleLanguageToggle}
-                className="lang-toggle"
+                className="lang-toggle mt-1"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -228,7 +228,7 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({ currentSection, onSecti
 
             {/* Mobile Menu Button */}
             <motion.button
-              className="lg:hidden p-3 rounded-xl backdrop-blur-sm transition-colors"
+              className="lg:hidden p-3 rounded-xl backdrop-blur-sm transition-colors mt-1"
               style={{
                background: 'var(--background-light)',
                 color: 'var(--text-dark)'
@@ -291,7 +291,7 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({ currentSection, onSecti
               exit={{ y: -20, opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.3 }}
             >
-              <div className="p-6 space-y-2">
+              <div className="p-6 space-y-3">
                 {navItems.map((item, index) => (
                   <motion.button
                     key={item.id}
