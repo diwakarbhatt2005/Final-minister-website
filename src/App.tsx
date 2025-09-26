@@ -52,7 +52,7 @@ function App() {
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      const headerHeight = 120; // Account for fixed header
+      const headerHeight = 140; // Account for fixed header - increased
       const elementPosition = element.offsetTop - headerHeight;
       window.scrollTo({
         top: elementPosition,
