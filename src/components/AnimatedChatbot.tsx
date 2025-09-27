@@ -231,7 +231,7 @@ const MinisterBot: React.FC = () => {
   if (!visible) return null;
 
   return (
-    <div className="flex h-screen max-h-screen bg-white relative overflow-hidden">
+    <div className="flex min-h-screen md:h-screen max-h-screen bg-white relative overflow-hidden">
       {/* Mobile Menu Toggle */}
       <div className="lg:hidden fixed top-4 left-4 z-50 flex gap-2">
         <button 
@@ -415,7 +415,7 @@ const MinisterBot: React.FC = () => {
       </div>
 
       {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col w-full min-w-0 h-full">
+      <div className="flex-1 flex flex-col w-full min-w-0 min-h-0">
         {/* Chat Header - Gray header to match history */}
         <div className="bg-gray-50 border-b border-gray-200 px-3 md:px-4 py-2 md:py-3 flex items-center justify-between lg:justify-end">
           {/* Mobile title */}
@@ -454,7 +454,7 @@ const MinisterBot: React.FC = () => {
         </div>
 
   {/* Chat Content */}
-  <div ref={messagesContainerRef} className="flex-1 px-2 py-1 md:p-6 overflow-y-auto bg-gray-50 relative min-h-0">
+  <div ref={messagesContainerRef} className="flex-none md:flex-1 px-2 py-1 md:p-6 md:overflow-y-auto bg-gray-50 relative">
           {messages.length === 1 ? (
             /* Welcome State */
             <div className="max-w-4xl mx-auto">
@@ -566,7 +566,7 @@ const MinisterBot: React.FC = () => {
         </div>
 
         {/* Input Area */}
-        <div className="bg-gray-50 border-t border-gray-200 p-2 md:p-4 flex-shrink-0 sticky bottom-0 z-10">
+        <div className="bg-gray-50 border-t border-gray-200 p-2 md:p-4 flex-shrink-0">
           <div className="max-w-4xl mx-auto">
             <div className="flex items-center gap-1 md:gap-2 flex-nowrap">
               {/* hidden file input used by upload button */}
