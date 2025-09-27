@@ -309,7 +309,7 @@ const MinisterBot: React.FC = () => {
 
       {/* Mobile History Overlay (Clock icon functionality) */}
       {showMobileHistory && (
-        <div className="lg:hidden fixed inset-0 z-40 bg-black bg-opacity-50" onClick={() => setShowMobileHistory(false)}>
+        <div className="lg:hidden fixed inset-0 z-40 bg-black bg-opacity-50 pt-16" onClick={() => setShowMobileHistory(false)}>
           <div className="w-72 sm:w-80 h-full bg-gray-50 border-r border-gray-200 flex flex-col ml-auto" onClick={(e) => e.stopPropagation()}>
             {/* Mobile History Header */}
             <div className="p-4 border-b border-gray-200">
@@ -417,7 +417,7 @@ const MinisterBot: React.FC = () => {
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col w-full min-w-0 h-full">
         {/* Chat Header - Gray header to match history */}
-        <div className="bg-gray-50 border-b border-gray-200 p-3 md:p-4 flex items-center justify-between lg:justify-end">
+        <div className="bg-gray-50 border-b border-gray-200 px-3 md:px-4 py-2 md:py-3 flex items-center justify-between lg:justify-end">
           {/* Mobile title */}
           <div className="lg:hidden flex items-center gap-2 ml-12">
             <div className="w-7 h-7 md:w-8 md:h-8 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-lg flex items-center justify-center">
@@ -454,12 +454,12 @@ const MinisterBot: React.FC = () => {
         </div>
 
   {/* Chat Content */}
-  <div ref={messagesContainerRef} className="flex-1 p-1 md:p-6 overflow-y-auto bg-gray-50 relative min-h-0">
+  <div ref={messagesContainerRef} className="flex-1 px-2 py-1 md:p-6 overflow-y-auto bg-gray-50 relative min-h-0">
           {messages.length === 1 ? (
             /* Welcome State */
             <div className="max-w-4xl mx-auto">
               {/* Centered Title */}
-              <div className="text-center mb-2 md:mb-8">
+              <div className="text-center border-b border-gray-200 pb-2 md:pb-4 mb-3 md:mb-8">
                 <h2 className="text-lg md:text-3xl font-semibold text-gray-900 mb-1 md:mb-4">How can I help you today?</h2>
                 <p className="text-xs md:text-lg text-gray-600 px-1 md:px-2">I'm Minister Bot, your AI assistant for government policies and initiatives. Ask me anything or try one of these examples:</p>
               </div>
@@ -566,7 +566,7 @@ const MinisterBot: React.FC = () => {
         </div>
 
         {/* Input Area */}
-        <div className="bg-gray-50 border-t border-gray-200 p-2 md:p-4 flex-shrink-0 sticky bottom-0 z-10" style={{paddingBottom: 'max(0.5rem, env(safe-area-inset-bottom))'}}>
+        <div className="bg-gray-50 border-t border-gray-200 p-2 md:p-4 flex-shrink-0 sticky bottom-0 z-10">
           <div className="max-w-4xl mx-auto">
             <div className="flex items-center gap-1 md:gap-2 flex-nowrap">
               {/* hidden file input used by upload button */}
@@ -609,7 +609,7 @@ const MinisterBot: React.FC = () => {
                 <Send className="w-3 h-3 md:w-5 md:h-5" />
               </button>
             </div>
-            <div className="text-center mt-1 px-1">
+            <div className="text-center mt-0.5 px-1">
               <p className="text-xs text-gray-500 hidden md:block">Powered by advanced AI • Responses are generated based on official information</p>
               <p className="text-xs text-gray-500 md:hidden">AI Assistant</p>
             </div>
