@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Bot, Users, BookOpen, Sparkles, X, FileText, MessageSquare, Mic, Plus, Settings, ExternalLink, Trash2, Phone } from 'lucide-react';
+import { Send, Bot, Users, BookOpen, Sparkles, X, FileText, MessageSquare, Mic, Plus, Settings, ExternalLink, Trash2, Phone, Clock } from 'lucide-react';
 
 interface Message {
   id: string;
@@ -21,6 +21,7 @@ const MinisterBot: React.FC = () => {
   const [visible, setVisible] = useState(true);
   const [showVoiceAgent, setShowVoiceAgent] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showMobileHistory, setShowMobileHistory] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 'welcome',
@@ -230,21 +231,27 @@ const MinisterBot: React.FC = () => {
   if (!visible) return null;
 
   return (
-    <div className="flex h-screen bg-white">
+    <div className="flex h-screen max-h-screen bg-white relative overflow-hidden">
       {/* Mobile Menu Toggle */}
-      <div className="lg:hidden fixed top-4 left-4 z-50">
+      <div className="lg:hidden fixed top-4 left-4 z-50 flex gap-2">
         <button 
           onClick={() => setShowMobileMenu(!showMobileMenu)}
-          className="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-lg flex items-center justify-center"
+          className="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-lg flex items-center justify-center shadow-md"
         >
           <MessageSquare className="w-5 h-5 text-gray-600" />
+        </button>
+        <button 
+          onClick={() => setShowMobileHistory(!showMobileHistory)}
+          className="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-lg flex items-center justify-center shadow-md"
+        >
+          <Clock className="w-5 h-5 text-gray-600" />
         </button>
       </div>
 
       {/* Mobile Sidebar Overlay */}
       {showMobileMenu && (
         <div className="lg:hidden fixed inset-0 z-40 bg-black bg-opacity-50" onClick={() => setShowMobileMenu(false)}>
-          <div className="w-80 h-full bg-gray-50 border-r border-gray-200 flex flex-col" onClick={(e) => e.stopPropagation()}>
+          <div className="w-72 sm:w-80 h-full bg-gray-50 border-r border-gray-200 flex flex-col" onClick={(e) => e.stopPropagation()}>
             {/* Mobile Sidebar Header */}
             <div className="p-4 border-b border-gray-200">
               <div className="flex items-center justify-between">
@@ -278,6 +285,63 @@ const MinisterBot: React.FC = () => {
                             <span className="text-xs text-gray-500">Invalid Date</span>
                             <span className="text-yellow-500">•</span>
                             <span className="text-xs text-yellow-600">{item.timestamp}</span>
+                          </div>
+                        </div>
+                        <button 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteHistory(item.id);
+                          }}
+                          className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-1 hover:bg-red-100 rounded text-red-500 hover:text-red-700"
+                          title="Delete conversation"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Mobile History Overlay (Clock icon functionality) */}
+      {showMobileHistory && (
+        <div className="lg:hidden fixed inset-0 z-40 bg-black bg-opacity-50" onClick={() => setShowMobileHistory(false)}>
+          <div className="w-72 sm:w-80 h-full bg-gray-50 border-r border-gray-200 flex flex-col ml-auto" onClick={(e) => e.stopPropagation()}>
+            {/* Mobile History Header */}
+            <div className="p-4 border-b border-gray-200">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-gradient-to-r from-blue-400 to-blue-600 rounded-lg flex items-center justify-center">
+                    <Clock className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h1 className="font-semibold text-lg text-gray-900">Chat History</h1>
+                    <p className="text-sm text-gray-600">Previous conversations</p>
+                  </div>
+                </div>
+                <button onClick={() => setShowMobileHistory(false)} className="p-1">
+                  <X className="w-5 h-5 text-gray-600" />
+                </button>
+              </div>
+            </div>
+
+            {/* Mobile History Content */}
+            <div className="flex-1 overflow-y-auto">
+              <div className="p-4">
+                <div className="space-y-3">
+                  {historyItems.map((item) => (
+                    <div key={item.id} className="p-3 rounded-lg hover:bg-white hover:border-blue-400 cursor-pointer border border-gray-200 transition-all duration-300 group shadow-sm relative">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <h3 className="font-medium text-gray-900 text-sm group-hover:text-blue-600">{item.title}</h3>
+                          <p className="text-xs text-gray-600 mt-1 line-clamp-2">{item.description}</p>
+                          <div className="flex items-center gap-1 mt-2">
+                            <Clock className="w-3 h-3 text-gray-400" />
+                            <span className="text-xs text-blue-600">{item.timestamp}</span>
                           </div>
                         </div>
                         <button 
@@ -351,19 +415,26 @@ const MinisterBot: React.FC = () => {
       </div>
 
       {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col w-full min-w-0 h-full">
         {/* Chat Header - Gray header to match history */}
-        <div className="bg-gray-50 border-b border-gray-200 p-4 flex items-center justify-between lg:justify-end">
+        <div className="bg-gray-50 border-b border-gray-200 p-3 md:p-4 flex items-center justify-between lg:justify-end">
           {/* Mobile title */}
-          <div className="lg:hidden flex items-center gap-3 ml-14">
-            <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">M</span>
+          <div className="lg:hidden flex items-center gap-2 ml-12">
+            <div className="w-7 h-7 md:w-8 md:h-8 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-xs md:text-sm">M</span>
             </div>
             <div>
-              <h1 className="font-semibold text-base text-gray-900">Minister Bot</h1>
+              <h1 className="font-semibold text-sm md:text-base text-gray-900">Minister Bot</h1>
             </div>
           </div>
           <div className="flex items-center gap-2 md:gap-3">
+            <button 
+              onClick={() => setShowMobileHistory(!showMobileHistory)}
+              className="lg:hidden w-8 h-8 bg-blue-100 hover:bg-blue-200 rounded-lg flex items-center justify-center transition-colors"
+              title="Chat History"
+            >
+              <Clock className="w-4 h-4 text-blue-600" />
+            </button>
             <button 
               onClick={handleVoiceAgent}
               className={`w-8 h-8 md:w-10 md:h-10 rounded-lg flex items-center justify-center transition-colors ${
@@ -383,25 +454,25 @@ const MinisterBot: React.FC = () => {
         </div>
 
   {/* Chat Content */}
-  <div ref={messagesContainerRef} className="flex-1 p-3 md:p-6 overflow-y-auto bg-gray-50 relative">
+  <div ref={messagesContainerRef} className="flex-1 p-1 md:p-6 overflow-y-auto bg-gray-50 relative min-h-0">
           {messages.length === 1 ? (
             /* Welcome State */
             <div className="max-w-4xl mx-auto">
               {/* Centered Title */}
-              <div className="text-center mb-6 md:mb-8">
-                <h2 className="text-xl md:text-3xl font-semibold text-gray-900 mb-3 md:mb-4">How can I help you today?</h2>
-                <p className="text-sm md:text-lg text-gray-600 px-2">I'm Minister Bot, your AI assistant for government policies and initiatives. Ask me anything or try one of these examples:</p>
+              <div className="text-center mb-2 md:mb-8">
+                <h2 className="text-lg md:text-3xl font-semibold text-gray-900 mb-1 md:mb-4">How can I help you today?</h2>
+                <p className="text-xs md:text-lg text-gray-600 px-1 md:px-2">I'm Minister Bot, your AI assistant for government policies and initiatives. Ask me anything or try one of these examples:</p>
               </div>
               
               {/* Example Cards - 2x2 Grid on desktop, 1 column on mobile */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 mb-6 md:mb-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-4 mb-2 md:mb-8 px-1">
                 {exampleCards.map((card, index) => (
                     <button
                       key={index}
                       onClick={() => handleExampleCard(card.text)}
-                      className="p-3 md:p-4 border-2 border-dashed border-gray-300 hover:border-yellow-500 rounded-lg hover:bg-yellow-50 transition-all duration-300 text-left group bg-white"
+                      className="p-2 md:p-4 border-2 border-dashed border-gray-300 hover:border-yellow-500 rounded-lg hover:bg-yellow-50 transition-all duration-300 text-left group bg-white"
                     >
-                      <div className="text-lg md:text-xl mb-2">{card.icon}</div>
+                      <div className="text-sm md:text-xl mb-1 md:mb-2">{card.icon}</div>
                       <p className="text-gray-700 group-hover:text-yellow-600 text-xs md:text-sm font-medium">{card.text}</p>
                     </button>
                   ))}
@@ -495,13 +566,13 @@ const MinisterBot: React.FC = () => {
         </div>
 
         {/* Input Area */}
-        <div className="bg-gray-50 border-t border-gray-200 p-3 md:p-4 pb-safe">
+        <div className="bg-gray-50 border-t border-gray-200 p-2 md:p-4 flex-shrink-0 sticky bottom-0 z-10" style={{paddingBottom: 'max(0.5rem, env(safe-area-inset-bottom))'}}>
           <div className="max-w-4xl mx-auto">
-            <div className="flex items-center gap-2 md:gap-3 flex-wrap sm:flex-nowrap">
+            <div className="flex items-center gap-1 md:gap-2 flex-nowrap">
               {/* hidden file input used by upload button */}
               <input ref={fileInputRef} type="file" className="hidden" onChange={handleFileChange} />
-              <button onClick={handleFileButton} className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 hover:text-gray-900 transition-colors flex-shrink-0 touch-manipulation" title="Upload file">
-                <FileText className="w-4 h-4 md:w-6 md:h-6" />
+              <button onClick={handleFileButton} className="w-8 h-8 md:w-12 md:h-12 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 hover:text-gray-900 transition-colors flex-shrink-0 touch-manipulation shadow-sm" title="Upload file">
+                <FileText className="w-3 h-3 md:w-5 md:h-5" />
               </button>
               <div className="flex-1 relative min-w-0">
                 <input
@@ -509,33 +580,38 @@ const MinisterBot: React.FC = () => {
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder="Type your message..."
-                  className="w-full h-10 md:h-12 px-3 md:px-4 border border-gray-300 bg-white text-gray-900 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent text-sm md:text-base"
+                  placeholder="Type message..."
+                  className="w-full h-8 md:h-12 px-2 md:px-4 border border-gray-300 bg-white text-gray-900 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-1 focus:ring-yellow-400 focus:border-yellow-400 text-xs md:text-base appearance-none shadow-sm"
+                  autoComplete="off"
+                  autoCorrect="off"
+                  autoCapitalize="off"
+                  spellCheck="false"
                 />
               </div>
 
-              <button onClick={handleNewChat} className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 hover:text-gray-900 transition-colors flex-shrink-0 touch-manipulation" title="Add">
-                <Plus className="w-4 h-4 md:w-6 md:h-6" />
+              <button onClick={handleNewChat} className="w-8 h-8 md:w-12 md:h-12 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 hover:text-gray-900 transition-colors flex-shrink-0 touch-manipulation shadow-sm" title="Add">
+                <Plus className="w-3 h-3 md:w-5 md:h-5" />
               </button>
               <button 
                 onClick={() => { if (isRecording) stopRecording(); else startRecording(); }}
-                className={`w-10 h-10 md:w-12 md:h-12 rounded-lg flex items-center justify-center transition-colors flex-shrink-0 touch-manipulation ${
+                className={`w-8 h-8 md:w-12 md:h-12 rounded-lg flex items-center justify-center transition-colors flex-shrink-0 touch-manipulation shadow-sm ${
                   isRecording ? 'bg-red-600 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-900'
                 }`} 
                 title="Record voice"
               >
-                <Mic className="w-4 h-4 md:w-6 md:h-6" />
+                <Mic className="w-3 h-3 md:w-5 md:h-5" />
               </button>
               <button
                 onClick={() => handleSendMessage(inputMessage)}
                 disabled={!inputMessage.trim() || isTyping}
-                className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-yellow-500 hover:bg-yellow-600 disabled:bg-gray-300 text-white disabled:text-gray-500 flex items-center justify-center transition-colors flex-shrink-0 touch-manipulation"
+                className="w-8 h-8 md:w-12 md:h-12 rounded-lg bg-yellow-500 hover:bg-yellow-600 disabled:bg-gray-300 text-white disabled:text-gray-500 flex items-center justify-center transition-colors flex-shrink-0 touch-manipulation shadow-sm"
               >
-                <Send className="w-4 h-4 md:w-6 md:h-6" />
+                <Send className="w-3 h-3 md:w-5 md:h-5" />
               </button>
             </div>
-            <div className="text-center mt-2 px-2">
-              <p className="text-xs text-gray-500">Powered by advanced AI • Responses are generated based on official information</p>
+            <div className="text-center mt-1 px-1">
+              <p className="text-xs text-gray-500 hidden md:block">Powered by advanced AI • Responses are generated based on official information</p>
+              <p className="text-xs text-gray-500 md:hidden">AI Assistant</p>
             </div>
           </div>
         </div>

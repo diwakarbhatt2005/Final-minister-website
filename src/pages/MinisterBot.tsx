@@ -7,7 +7,7 @@ const MinisterBotPage: React.FC = () => {
   return (
     <motion.section
       id="ministerbot"
-      className="min-h-screen bg-gray-100 py-8 px-4"
+      className="min-h-screen bg-gray-100 pt-24 px-4"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
@@ -15,7 +15,7 @@ const MinisterBotPage: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto">
         <motion.div
-          className="text-center mb-8"
+          className="text-center mb-8 pt-4"
           initial={{ y: 30, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
