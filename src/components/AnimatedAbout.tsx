@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { Award, Users, Globe, MessageCircle, Sparkles } from 'lucide-react';
+import { Award, Users, Globe, Sparkles } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
-import AnimatedChatbot from './AnimatedChatbot';
-
 const AnimatedAbout: React.FC = () => {
   const { t } = useLanguage();
-  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
   const [ref, inView] = useInView({ threshold: 0.1, triggerOnce: true });
 
   const achievements = [
@@ -41,7 +38,6 @@ const AnimatedAbout: React.FC = () => {
       y: 0,
       transition: {
         duration: 0.8,
-        ease: "easeOut",
       },
     },
   };
@@ -97,39 +93,39 @@ const AnimatedAbout: React.FC = () => {
           className="grid lg:grid-cols-2 gap-16 items-center"
         >
           {/* Left Column - Image and Stats */}
-          <motion.div variants={itemVariants} className="space-y-8">
+            <motion.div variants={itemVariants} className="space-y-8">
             <div className="relative">
               <motion.div
-                className="relative overflow-hidden rounded-3xl shadow-2xl minister-portrait mx-auto"
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.3 }}
+              className="relative overflow-hidden rounded-3xl shadow-2xl minister-portrait mx-auto"
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.3 }}
               >
-                <img
-                  src="https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=800"
-                  alt="Minister"
-                  className="w-full h-full object-cover"
-                />
-                <div 
-                  className="absolute inset-0"
-                  style={{
-                    background: 'linear-gradient(to top, rgba(139, 0, 0, 0.3), transparent)'
-                  }}
-                />
-                
-                {/* Floating Badge */}
-                <motion.div
-                  className="absolute top-6 right-6 backdrop-blur-xl p-4 rounded-2xl border"
-                  style={{
-                    background: 'rgba(255, 215, 0, 0.2)',
-                    borderColor: 'rgba(255, 215, 0, 0.4)'
-                  }}
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.5, duration: 0.5 }}
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                >
-                  <Sparkles className="w-6 h-6" style={{ color: 'var(--accent-gold)' }} />
-                </motion.div>
+              <img
+                src="https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=800"
+                alt="Minister"
+                className="w-full h-full object-cover"
+              />
+              <div 
+                className="absolute inset-0"
+                style={{
+                background: 'linear-gradient(to top, rgba(139, 0, 0, 0.3), transparent)'
+                }}
+              />
+              
+              {/* Floating Badge */}
+              <motion.div
+                className="absolute top-6 right-6 backdrop-blur-xl p-4 rounded-2xl border"
+                style={{
+                background: 'rgba(255, 215, 0, 0.2)',
+                borderColor: 'rgba(255, 215, 0, 0.4)'
+                }}
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.5, duration: 0.5, ease: "easeOut" }}
+                whileHover={{ scale: 1.1, rotate: 5 }}
+              >
+                <Sparkles className="w-6 h-6" style={{ color: 'var(--accent-gold)' }} />
+              </motion.div>
               </motion.div>
             </div>
 
@@ -268,74 +264,7 @@ const AnimatedAbout: React.FC = () => {
           </motion.div>
         </motion.div>
 
-        {/* Chatbot Section */}
-        <motion.div
-          className="mt-32 text-center"
-          initial={{ opacity: 0, y: 50 }}
-          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-          transition={{ delay: 1, duration: 0.8 }}
-        >
-          <div className="max-w-4xl mx-auto">
-            <motion.div
-              className="mb-12"
-              whileHover={{ scale: 1.02 }}
-            >
-              <motion.div
-                className="flex justify-center mb-8"
-                animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              >
-                <div 
-                  className="w-20 h-20 rounded-3xl flex items-center justify-center shadow-2xl"
-                  style={{
-                    background: 'linear-gradient(135deg, var(--primary-maroon), var(--accent-gold), var(--secondary-green))'
-                  }}
-                >
-                  <MessageCircle className="w-10 h-10 text-white" />
-                </div>
-              </motion.div>
 
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                <span style={{ color: 'var(--text-dark)' }}>
-                  {t('chatWithBot')}
-                </span>
-              </h2>
-
-              <p 
-                className="text-xl mb-10 max-w-3xl mx-auto leading-relaxed"
-                style={{ color: 'var(--neutral-warm-gray)' }}
-              >
-                {t('chatIntro')}
-              </p>
-
-              {!isChatbotOpen ? (
-                <motion.button
-                  onClick={() => setIsChatbotOpen(true)}
-                  className="group relative px-12 py-6 rounded-2xl font-bold text-xl text-white shadow-2xl transition-colors btn-primary"
-                  whileHover={{ 
-                    scale: 1.05,
-                    boxShadow: "0 25px 50px rgba(139, 0, 0, 0.4)"
-                  }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <span className="relative z-10 flex items-center">
-                    <MessageCircle className="w-6 h-6 mr-3" />
-                    {t('startConversation')}
-                  </span>
-                </motion.button>
-              ) : (
-                <motion.div
-                  className="professional-card rounded-3xl shadow-2xl overflow-hidden"
-                  initial={{ opacity: 0, scale: 0.9, y: 50 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  transition={{ duration: 0.5, ease: "easeOut" }}
-                >
-                  <AnimatedChatbot />
-                </motion.div>
-              )}
-            </motion.div>
-          </div>
-        </motion.div>
       </div>
     </section>
   );

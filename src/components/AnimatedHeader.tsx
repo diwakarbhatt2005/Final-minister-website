@@ -23,7 +23,7 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({ currentSection, onSecti
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navItems = [
-    { id: 'home', label: t('home') },
+    { id: 'ministerbot', label: t('ministerbot') },
     { id: 'about', label: t('about') },
     { id: 'initiatives', label: t('initiatives') },
     { id: 'news', label: t('news') },
@@ -86,7 +86,7 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({ currentSection, onSecti
               className="flex items-center space-x-3 cursor-pointer no-translate"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => scrollToSection('home')}
+              onClick={() => scrollToSection('ministerbot')}
             >
               <motion.div 
                 className="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg"

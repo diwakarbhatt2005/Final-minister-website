@@ -3,20 +3,21 @@ import { AnimatePresence } from 'framer-motion';
 import Preloader from './components/Preloader';
 import ParticleBackground from './components/ParticleBackground';
 import AnimatedHeader from './components/AnimatedHeader';
-import AnimatedHero from './components/AnimatedHero';
+
 import AnimatedAbout from './components/AnimatedAbout';
 import Initiatives from './pages/Initiatives';
 import News from './pages/News';
 import Gallery from './pages/Gallery';
 import Contact from './pages/Contact';
 import FAQ from './pages/FAQ';
+import MinisterBotPage from './pages/MinisterBot';
 import { LanguageProvider } from './context/LanguageContext';
 import './services/translationService.js';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
 function App() {
-  const [currentSection, setCurrentSection] = useState('home');
+  const [currentSection, setCurrentSection] = useState('ministerbot');
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -30,7 +31,7 @@ function App() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['home', 'about', 'initiatives', 'news', 'gallery', 'contact', 'faq'];
+      const sections = ['ministerbot', 'about', 'initiatives', 'news', 'gallery', 'contact', 'faq'];
       const scrollPosition = window.scrollY + 150; // Account for fixed header
 
       for (const section of sections) {
@@ -61,10 +62,6 @@ function App() {
     }
   };
 
-  const handleScrollToNext = () => {
-    scrollToSection('about');
-  };
-
   const handlePreloaderComplete = () => {
     setIsLoading(false);
   };
@@ -91,8 +88,10 @@ function App() {
               onSectionChange={setCurrentSection}
             />
             
-            <main className="relative z-10">
-              <AnimatedHero onScrollToNext={handleScrollToNext} />
+            <main className="relative z-10 pt-24">
+              <div id="ministerbot">
+                <MinisterBotPage />
+              </div>
               <AnimatedAbout />
               <div id="initiatives">
                 <Initiatives />

@@ -18,6 +18,7 @@ const translations = {
     gallery: 'Gallery',
     contact: 'Contact',
     faq: 'FAQ',
+    ministerbot: 'Minister Bot',
     language: 'भाषा',
     
     // Hero Section
@@ -60,6 +61,7 @@ const translations = {
     gallery: 'गैलरी',
     contact: 'संपर्क',
     faq: 'सामान्य प्रश्न',
+    ministerbot: 'मंत्री बॉट',
     language: 'English',
     
     // Hero Section
