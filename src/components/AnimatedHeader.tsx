@@ -56,7 +56,7 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({ currentSection, onSecti
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      const headerHeight = 120; // Account for fixed header
+      const headerHeight = window.innerWidth >= 768 ? 96 : 80; // Responsive header height
       const elementPosition = element.offsetTop - headerHeight;
       window.scrollTo({
         top: elementPosition,
@@ -79,8 +79,8 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({ currentSection, onSecti
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style={{ minHeight: '100px' }}>
-          <div className="flex items-center justify-between h-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-20 md:h-24">
             {/* Logo */}
             <motion.div 
               className="flex items-center space-x-3 cursor-pointer no-translate"

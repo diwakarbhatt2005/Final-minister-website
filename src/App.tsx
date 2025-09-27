@@ -32,7 +32,8 @@ function App() {
   useEffect(() => {
     const handleScroll = () => {
       const sections = ['ministerbot', 'about', 'initiatives', 'news', 'gallery', 'contact', 'faq'];
-      const scrollPosition = window.scrollY + 150; // Account for fixed header
+      const headerHeight = window.innerWidth >= 768 ? 96 : 80;
+      const scrollPosition = window.scrollY + headerHeight + 50; // Account for fixed header
 
       for (const section of sections) {
         const element = document.getElementById(section);
@@ -53,7 +54,7 @@ function App() {
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      const headerHeight = 120; // Account for fixed header
+      const headerHeight = window.innerWidth >= 768 ? 96 : 80; // Responsive header height
       const elementPosition = element.offsetTop - headerHeight;
       window.scrollTo({
         top: elementPosition,
@@ -88,7 +89,7 @@ function App() {
               onSectionChange={setCurrentSection}
             />
             
-            <main className="relative z-10 pt-24">
+            <main className="relative z-10 pt-20 md:pt-24">
               <div id="ministerbot">
                 <MinisterBotPage />
               </div>
