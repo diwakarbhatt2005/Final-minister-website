@@ -20,6 +20,7 @@ interface HistoryItem {
 const MinisterBot: React.FC = () => {
   const [visible, setVisible] = useState(true);
   const [showVoiceAgent, setShowVoiceAgent] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 'welcome',
@@ -230,6 +231,75 @@ const MinisterBot: React.FC = () => {
 
   return (
     <div className="flex h-screen bg-white">
+      {/* Mobile Menu Toggle */}
+      <div className="lg:hidden fixed top-4 left-4 z-50">
+        <button 
+          onClick={() => setShowMobileMenu(!showMobileMenu)}
+          className="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-lg flex items-center justify-center"
+        >
+          <MessageSquare className="w-5 h-5 text-gray-600" />
+        </button>
+      </div>
+
+      {/* Mobile Sidebar Overlay */}
+      {showMobileMenu && (
+        <div className="lg:hidden fixed inset-0 z-40 bg-black bg-opacity-50" onClick={() => setShowMobileMenu(false)}>
+          <div className="w-80 h-full bg-gray-50 border-r border-gray-200 flex flex-col" onClick={(e) => e.stopPropagation()}>
+            {/* Mobile Sidebar Header */}
+            <div className="p-4 border-b border-gray-200">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-lg flex items-center justify-center">
+                    <span className="text-white font-bold text-lg">M</span>
+                  </div>
+                  <div>
+                    <h1 className="font-semibold text-lg text-gray-900">Minister Bot</h1>
+                    <p className="text-sm text-gray-600">AI Assistant</p>
+                  </div>
+                </div>
+                <button onClick={() => setShowMobileMenu(false)} className="p-1">
+                  <X className="w-5 h-5 text-gray-600" />
+                </button>
+              </div>
+            </div>
+
+            {/* Mobile History Section */}
+            <div className="flex-1 overflow-y-auto">
+              <div className="p-4">
+                <h2 className="font-semibold text-gray-900 mb-4">History</h2>
+                <div className="space-y-3">
+                  {historyItems.map((item) => (
+                    <div key={item.id} className="p-3 rounded-lg hover:bg-white hover:border-yellow-400 cursor-pointer border border-gray-200 transition-all duration-300 group shadow-sm relative">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <h3 className="font-medium text-gray-900 text-sm group-hover:text-yellow-600">{item.title}</h3>
+                          <p className="text-xs text-gray-600 mt-1 line-clamp-2">{item.description}</p>
+                          <div className="flex items-center gap-1 mt-2">
+                            <span className="text-xs text-gray-500">Invalid Date</span>
+                            <span className="text-yellow-500">•</span>
+                            <span className="text-xs text-yellow-600">{item.timestamp}</span>
+                          </div>
+                        </div>
+                        <button 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteHistory(item.id);
+                          }}
+                          className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-1 hover:bg-red-100 rounded text-red-500 hover:text-red-700"
+                          title="Delete conversation"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Left Sidebar - Hidden on mobile */}
       <div className="hidden lg:flex w-80 bg-gray-50 border-r border-gray-200 flex-col">
         {/* Sidebar Header */}
@@ -283,7 +353,16 @@ const MinisterBot: React.FC = () => {
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col">
         {/* Chat Header - Gray header to match history */}
-        <div className="bg-gray-50 border-b border-gray-200 p-4 flex items-center justify-end">
+        <div className="bg-gray-50 border-b border-gray-200 p-4 flex items-center justify-between lg:justify-end">
+          {/* Mobile title */}
+          <div className="lg:hidden flex items-center gap-3 ml-14">
+            <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-sm">M</span>
+            </div>
+            <div>
+              <h1 className="font-semibold text-base text-gray-900">Minister Bot</h1>
+            </div>
+          </div>
           <div className="flex items-center gap-2 md:gap-3">
             <button 
               onClick={handleVoiceAgent}
@@ -304,14 +383,14 @@ const MinisterBot: React.FC = () => {
         </div>
 
   {/* Chat Content */}
-  <div ref={messagesContainerRef} className="flex-1 p-6 overflow-y-auto bg-gray-50 relative">
+  <div ref={messagesContainerRef} className="flex-1 p-3 md:p-6 overflow-y-auto bg-gray-50 relative">
           {messages.length === 1 ? (
             /* Welcome State */
             <div className="max-w-4xl mx-auto">
               {/* Centered Title */}
-              <div className="text-center mb-8">
-                <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4">How can I help you today?</h2>
-                <p className="text-base md:text-lg text-gray-600">I'm Minister Bot, your AI assistant for government policies and initiatives. Ask me anything or try one of these examples:</p>
+              <div className="text-center mb-6 md:mb-8">
+                <h2 className="text-xl md:text-3xl font-semibold text-gray-900 mb-3 md:mb-4">How can I help you today?</h2>
+                <p className="text-sm md:text-lg text-gray-600 px-2">I'm Minister Bot, your AI assistant for government policies and initiatives. Ask me anything or try one of these examples:</p>
               </div>
               
               {/* Example Cards - 2x2 Grid on desktop, 1 column on mobile */}
@@ -332,7 +411,7 @@ const MinisterBot: React.FC = () => {
             </div>
           ) : (
             /* Chat Messages */
-            <div className="max-w-4xl mx-auto space-y-4">
+            <div className="max-w-4xl mx-auto space-y-3 md:space-y-4">
               {messages.map((message) => (
                 <div key={message.id} className={`flex ${message.isBot ? 'justify-start' : 'justify-end'}`}>
                   {message.isBot ? (
@@ -402,21 +481,12 @@ const MinisterBot: React.FC = () => {
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">Real-time Voice Agent</h3>
                 <p className="text-gray-600 mb-4">Speak naturally and get instant responses from our AI assistant.</p>
-                <div className="flex gap-3 justify-center">
+                <div className="flex justify-center">
                   <button 
                     onClick={() => setShowVoiceAgent(false)}
-                    className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors"
+                    className="px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors"
                   >
                     Close
-                  </button>
-                  <button 
-                    onClick={() => {
-                      setShowVoiceAgent(false);
-                      // Start voice conversation logic here
-                    }}
-                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
-                  >
-                    Start Talking
                   </button>
                 </div>
               </div>
@@ -425,46 +495,46 @@ const MinisterBot: React.FC = () => {
         </div>
 
         {/* Input Area */}
-        <div className="bg-gray-50 border-t border-gray-200 p-3 md:p-4">
+        <div className="bg-gray-50 border-t border-gray-200 p-3 md:p-4 pb-safe">
           <div className="max-w-4xl mx-auto">
-            <div className="flex items-center gap-2 md:gap-3">
+            <div className="flex items-center gap-2 md:gap-3 flex-wrap sm:flex-nowrap">
               {/* hidden file input used by upload button */}
               <input ref={fileInputRef} type="file" className="hidden" onChange={handleFileChange} />
-              <button onClick={handleFileButton} className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 hover:text-gray-900 transition-colors flex-shrink-0" title="Upload file">
-                <FileText className="w-5 h-5 md:w-6 md:h-6" />
+              <button onClick={handleFileButton} className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 hover:text-gray-900 transition-colors flex-shrink-0 touch-manipulation" title="Upload file">
+                <FileText className="w-4 h-4 md:w-6 md:h-6" />
               </button>
-              <div className="flex-1 relative">
+              <div className="flex-1 relative min-w-0">
                 <input
                   type="text"
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder="Type your message..."
-                  className="w-full h-10 md:h-12 px-4 border border-gray-300 bg-white text-gray-900 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent text-sm md:text-base"
+                  className="w-full h-10 md:h-12 px-3 md:px-4 border border-gray-300 bg-white text-gray-900 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent text-sm md:text-base"
                 />
               </div>
 
-              <button onClick={handleNewChat} className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 hover:text-gray-900 transition-colors flex-shrink-0" title="Add">
-                <Plus className="w-5 h-5 md:w-6 md:h-6" />
+              <button onClick={handleNewChat} className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 hover:text-gray-900 transition-colors flex-shrink-0 touch-manipulation" title="Add">
+                <Plus className="w-4 h-4 md:w-6 md:h-6" />
               </button>
               <button 
                 onClick={() => { if (isRecording) stopRecording(); else startRecording(); }}
-                className={`w-10 h-10 md:w-12 md:h-12 rounded-lg flex items-center justify-center transition-colors flex-shrink-0 ${
+                className={`w-10 h-10 md:w-12 md:h-12 rounded-lg flex items-center justify-center transition-colors flex-shrink-0 touch-manipulation ${
                   isRecording ? 'bg-red-600 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-900'
                 }`} 
                 title="Record voice"
               >
-                <Mic className="w-5 h-5 md:w-6 md:h-6" />
+                <Mic className="w-4 h-4 md:w-6 md:h-6" />
               </button>
               <button
                 onClick={() => handleSendMessage(inputMessage)}
                 disabled={!inputMessage.trim() || isTyping}
-                className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-yellow-500 hover:bg-yellow-600 disabled:bg-gray-300 text-white disabled:text-gray-500 flex items-center justify-center transition-colors flex-shrink-0"
+                className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-yellow-500 hover:bg-yellow-600 disabled:bg-gray-300 text-white disabled:text-gray-500 flex items-center justify-center transition-colors flex-shrink-0 touch-manipulation"
               >
-                <Send className="w-5 h-5 md:w-6 md:h-6" />
+                <Send className="w-4 h-4 md:w-6 md:h-6" />
               </button>
             </div>
-            <div className="text-center mt-2">
+            <div className="text-center mt-2 px-2">
               <p className="text-xs text-gray-500">Powered by advanced AI • Responses are generated based on official information</p>
             </div>
           </div>
