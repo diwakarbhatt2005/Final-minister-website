@@ -309,8 +309,8 @@ const MinisterBot: React.FC = () => {
 
       {/* Mobile History Overlay (Clock icon functionality) */}
       {showMobileHistory && (
-        <div className="lg:hidden fixed inset-0 z-40 bg-black bg-opacity-50 pt-16" onClick={() => setShowMobileHistory(false)}>
-          <div className="w-72 sm:w-80 h-full bg-gray-50 border-r border-gray-200 flex flex-col ml-auto" onClick={(e) => e.stopPropagation()}>
+        <div className="lg:hidden fixed inset-0 z-40 bg-black bg-opacity-50" onClick={() => setShowMobileHistory(false)}>
+          <div className="w-72 sm:w-80 h-full bg-gray-50 border-l border-gray-200 flex flex-col ml-auto" onClick={(e) => e.stopPropagation()}>
             {/* Mobile History Header */}
             <div className="p-4 border-b border-gray-200">
               <div className="flex items-center justify-between">
