@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowDown, Sparkles, Target, Users } from 'lucide-react';
+import { /* no icons needed here */ } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import Typed from 'typed.js';
 
@@ -33,11 +33,6 @@ const AnimatedHero: React.FC<AnimatedHeroProps> = ({ onScrollToNext }) => {
     }
   }, []);
 
-  const floatingElements = [
-    { icon: Target, text: 'Vision 2030', position: 'top-20 left-10', delay: 0.5 },
-    { icon: Users, text: 'Communities Served', position: 'top-32 right-16', delay: 0.8 },
-    { icon: Sparkles, text: 'Innovation First', position: 'bottom-32 left-20', delay: 1.1 },
-  ];
 
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -65,47 +60,10 @@ const AnimatedHero: React.FC<AnimatedHeroProps> = ({ onScrollToNext }) => {
         />
       </motion.div>
 
-      {/* Floating Elements */}
-      {floatingElements.map((element, index) => {
-        const Icon = element.icon;
-        return (
-          <motion.div
-            key={index}
-            className={`absolute ${element.position} bg-white/10 backdrop-blur-xl p-6 rounded-2xl border border-white/20 shadow-2xl hidden lg:block z-20`}
-            initial={{ opacity: 0, y: 50, rotateX: -15 }}
-            animate={{ 
-              opacity: 1, 
-              y: 0, 
-              rotateX: 0,
-              y: [0, -10, 0]
-            }}
-            transition={{ 
-              opacity: { delay: element.delay, duration: 0.8 },
-              y: { delay: element.delay + 0.5, duration: 2, repeat: Infinity, ease: "easeInOut" }
-            }}
-            whileHover={{ 
-              scale: 1.1, 
-              rotateY: 10,
-              boxShadow: "0 25px 50px rgba(0,0,0,0.3)"
-            }}
-          >
-            <div className="flex items-center space-x-3">
-              <motion.div
-                animate={{ rotate: [0, 360] }}
-                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-              >
-                <Icon className="w-8 h-8 text-white" />
-              </motion.div>
-              <div>
-                <div className="text-white/80 text-sm">Excellence in Service</div>
-              </div>
-            </div>
-          </motion.div>
-        );
-      })}
+      {/* Floating elements removed per design (Excellence in Service) */}
 
       {/* Main Content */}
-      <div className="relative z-20 text-center text-white max-w-6xl mx-auto px-4 pt-20">
+  <div className="relative z-20 text-center text-white max-w-6xl mx-auto px-4 pt-28">
         <motion.div
           initial={{ opacity: 0, y: 100 }}
           animate={{ opacity: 1, y: 0 }}
@@ -178,34 +136,7 @@ const AnimatedHero: React.FC<AnimatedHeroProps> = ({ onScrollToNext }) => {
         </motion.div>
       </div>
 
-      {/* Scroll Indicator */}
-      <motion.div
-        className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.5, duration: 1 }}
-      >
-        <motion.button
-          onClick={onScrollToNext}
-          className="flex flex-col items-center text-white/70 hover:text-white transition-colors group"
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          whileHover={{ scale: 1.1 }}
-        >
-          <span className="text-sm mb-2 group-hover:text-white transition-colors">Scroll to explore</span>
-          <motion.div
-            className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center"
-            whileHover={{ borderColor: "rgba(255, 255, 255, 0.8)" }}
-          >
-            <motion.div
-              className="w-1 h-3 bg-white/50 rounded-full mt-2"
-              animate={{ y: [0, 12, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-            />
-          </motion.div>
-          <ArrowDown className="w-5 h-5 mt-2 group-hover:text-white transition-colors" />
-        </motion.button>
-      </motion.div>
+      {/* Scroll indicator removed per design */}
 
       {/* Decorative Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-10">

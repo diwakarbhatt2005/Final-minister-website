@@ -1,7 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ChevronDown, Globe, Sun, Moon } from 'lucide-react';
+import { Menu, X, Globe } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+
+// Extend Window interface to include translator
+declare global {
+  interface Window {
+    translator?: {
+      storeOriginalTexts: () => void;
+      translatePage: (lang: string) => Promise<void>;
+    };
+  }
+}
 
 interface AnimatedHeaderProps {
   currentSection: string;
@@ -10,9 +20,7 @@ interface AnimatedHeaderProps {
 
 const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({ currentSection, onSectionChange }) => {
   const { language, setLanguage, t } = useLanguage();
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
 
   const navItems = [
     { id: 'home', label: t('home') },
@@ -25,40 +33,18 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({ currentSection, onSecti
   ];
 
   useEffect(() => {
-    // Initialize theme
-    const savedTheme = localStorage.getItem('theme') || 
-      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    setIsDarkMode(savedTheme === 'dark');
-    document.documentElement.setAttribute('data-theme', savedTheme);
+    // Theme handling removed: keep navbar permanently white per design
 
     // Initialize translation system
     if (window.translator) {
       window.translator.storeOriginalTexts();
     }
 
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    // keep listener only if needed later; currently no scroll-dependent state
+    return () => {};
   }, []);
 
-  const toggleTheme = () => {
-    const newTheme = isDarkMode ? 'light' : 'dark';
-    setIsDarkMode(!isDarkMode);
-    
-    document.documentElement.classList.add('theme-transitioning');
-    
-    setTimeout(() => {
-      document.documentElement.setAttribute('data-theme', newTheme);
-      localStorage.setItem('theme', newTheme);
-      
-      setTimeout(() => {
-        document.documentElement.classList.remove('theme-transitioning');
-      }, 300);
-    }, 50);
-  };
+  // Theme toggle removed per design
 
   const handleLanguageToggle = async () => {
     if (window.translator) {
@@ -84,15 +70,9 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({ currentSection, onSecti
   return (
     <>
       <motion.header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          isScrolled 
-            ? 'backdrop-blur-xl border-b shadow-lg' 
-            : 'backdrop-blur-sm'
-        }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b shadow-lg`}
         style={{
-          background: isScrolled 
-            ? 'var(--card-white)' 
-            : 'rgba(255, 255, 255, 0.9)',
+          background: 'var(--card-white)',
           borderColor: 'var(--glass-warm)'
         }}
         initial={{ y: -100 }}
@@ -181,38 +161,7 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({ currentSection, onSecti
                 </motion.button>
               ))}
               
-              {/* Theme Toggle */}
-              <motion.button
-                onClick={toggleTheme}
-                className="theme-toggle mt-1"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                title={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-              >
-                <AnimatePresence mode="wait">
-                  {isDarkMode ? (
-                    <motion.div
-                      key="sun"
-                      initial={{ rotate: -90, opacity: 0 }}
-                      animate={{ rotate: 0, opacity: 1 }}
-                      exit={{ rotate: 90, opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <Sun className="w-5 h-5" />
-                    </motion.div>
-                  ) : (
-                    <motion.div
-                      key="moon"
-                      initial={{ rotate: 90, opacity: 0 }}
-                      animate={{ rotate: 0, opacity: 1 }}
-                      exit={{ rotate: -90, opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <Moon className="w-5 h-5" />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.button>
+              {/* Theme toggle removed per design */}
 
               {/* Language Toggle */}
               <motion.button
@@ -326,14 +275,7 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({ currentSection, onSecti
                     <Globe className="w-4 h-4 inline mr-2" />
                     {language === 'en' ? 'हिंदी में देखें' : 'View in English'}
                   </button>
-                  <button
-                    onClick={toggleTheme}
-                    className="w-full text-left px-6 py-4 rounded-xl font-medium transition-all duration-300"
-                    style={{ color: 'var(--text-dark)' }}
-                  >
-                    {isDarkMode ? <Sun className="w-4 h-4 inline mr-2" /> : <Moon className="w-4 h-4 inline mr-2" />}
-                    {isDarkMode ? 'Light Mode' : 'Dark Mode'}
-                  </button>
+                  {/* Theme toggle removed per design */}
                 </div>
               </div>
             </motion.div>

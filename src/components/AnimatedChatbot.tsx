@@ -366,8 +366,7 @@ const AnimatedChatbot: React.FC = () => {
                 style={{
                   background: 'var(--card-white)',
                   borderColor: 'var(--glass-warm)',
-                  color: 'var(--text-dark)',
-                  '--tw-ring-color': 'var(--accent-gold)'
+                  color: 'var(--text-dark)'
                 }}
               />
               <motion.div
